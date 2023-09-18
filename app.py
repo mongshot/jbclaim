@@ -24,15 +24,25 @@ def home():
 
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
-    # reservation_id에 해당하는 예약을 찾아 삭제
-    for reservation in reservations:
-        if reservation.get('id') == reservation_id:
+    reservation = next((r for r in reservations if r['id'] == reservation_id), None)
+    if reservation:
+        car_id = reservation['car_id']
+        car = next((c for c in cars if c['id'] == car_id), None)
+        if car:
+            # 로그 추가: 예약 정보 확인
+            print(f"Cancelling reservation ID {reservation_id} for car ID {car_id}")
+            # 로그 추가: 차량 상태 변경
+            print(f"Setting car ID {car_id} to available")
+            car['available'] = True
+            car['reservation_id'] = None
             reservations.remove(reservation)
             flash('예약이 취소되었습니다.', 'success')
-            break
+        else:
+            flash('차량을 찾을 수 없습니다.', 'danger')
     else:
         flash('예약을 찾을 수 없습니다.', 'danger')
     return redirect(url_for('home'))
+
 
 @app.route('/reserve/<int:car_id>/<time_slot>')
 def reserve(car_id, time_slot):
