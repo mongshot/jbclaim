@@ -6,13 +6,13 @@ app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
 
 # 간단한 차량 데이터베이스
 cars = [
-    {'id': 1, 'name': 'Car 1', 'available': True},
-    {'id': 2, 'name': 'Car 2', 'available': True},
-    {'id': 3, 'name': 'Car 3', 'available': True},
-    {'id': 4, 'name': 'Car 4', 'available': True},
-    {'id': 5, 'name': 'Car 5', 'available': True},
-    {'id': 6, 'name': 'Car 6', 'available': True},
-    {'id': 7, 'name': 'Car 7', 'available': True}
+    {'id': 1, 'name': 'Car 1', 'available': True, 'reservation_id': None},
+    {'id': 2, 'name': 'Car 2', 'available': True, 'reservation_id': None},
+    {'id': 3, 'name': 'Car 3', 'available': True, 'reservation_id': None},
+    {'id': 4, 'name': 'Car 4', 'available': True, 'reservation_id': None},
+    {'id': 5, 'name': 'Car 5', 'available': True, 'reservation_id': None},
+    {'id': 6, 'name': 'Car 6', 'available': True, 'reservation_id': None},
+    {'id': 7, 'name': 'Car 7', 'available': True, 'reservation_id': None}
 ]
 
 # 간단한 예약 데이터베이스
@@ -29,10 +29,7 @@ def cancel_reservation(reservation_id):
         car_id = reservation['car_id']
         car = next((c for c in cars if c['id'] == car_id), None)
         if car:
-            # 로그 추가: 예약 정보 확인
-            print(f"Cancelling reservation ID {reservation_id} for car ID {car_id}")
-            # 로그 추가: 차량 상태 변경
-            print(f"Setting car ID {car_id} to available")
+            # 차량 상태 변경 및 예약 정보 제거
             car['available'] = True
             car['reservation_id'] = None
             reservations.remove(reservation)
@@ -43,15 +40,14 @@ def cancel_reservation(reservation_id):
         flash('예약을 찾을 수 없습니다.', 'danger')
     return redirect(url_for('home'))
 
-
-
 @app.route('/reserve/<int:car_id>/<time_slot>')
 def reserve(car_id, time_slot):
     car = next((c for c in cars if c['id'] == car_id), None)
     if car:
         if car['available']:
             car['available'] = False
-            reservations.append({'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now()})
+            car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
+            reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now()})
             flash('예약이 완료되었습니다.', 'success')
         else:
             flash('이미 예약된 차량입니다.', 'danger')
