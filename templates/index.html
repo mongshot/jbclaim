@@ -1,60 +1,41 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from datetime import datetime
-
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
-
-# 간단한 차량 데이터베이스
-cars = [
-    {'id': 1, 'name': 'Car 1', 'available': True, 'reservation_id': None},
-    {'id': 2, 'name': 'Car 2', 'available': True, 'reservation_id': None},
-    {'id': 3, 'name': 'Car 3', 'available': True, 'reservation_id': None},
-    {'id': 4, 'name': 'Car 4', 'available': True, 'reservation_id': None},
-    {'id': 5, 'name': 'Car 5', 'available': True, 'reservation_id': None},
-    {'id': 6, 'name': 'Car 6', 'available': True, 'reservation_id': None},
-    {'id': 7, 'name': 'Car 7', 'available': True, 'reservation_id': None}
-]
-
-# 간단한 예약 데이터베이스
-reservations = []
-
-# 예약 ID 카운터
-reservation_id_counter = 1
-
-@app.route('/')
-def home():
-    return render_template('index.html', cars=cars)
-
-@app.route('/reserve/<int:car_id>/<time_slot>')
-def reserve(car_id, time_slot):
-    car = next((c for c in cars if c['id'] == car_id), None)
-    if car:
-        if car['available']:
-            car['available'] = False
-            car['reservation_id'] = reservation_id_counter
-            reservations.append({'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now(), 'id': reservation_id_counter})
-            reservation_id_counter += 1
-            flash('예약이 완료되었습니다.', 'success')
-        else:
-            flash('이미 예약된 차량입니다.', 'danger')
-    return redirect(url_for('home'))
-
-@app.route('/cancel/<int:reservation_id>')
-def cancel_reservation(reservation_id):
-    reservation = next((r for r in reservations if r['id'] == reservation_id), None)
-    if reservation:
-        car_id = reservation['car_id']
-        car = next((c for c in cars if c['id'] == car_id), None)
-        if car:
-            car['available'] = True
-            car['reservation_id'] = None
-            reservations.remove(reservation)
-            flash('예약이 취소되었습니다.', 'success')
-        else:
-            flash('차량을 찾을 수 없습니다.', 'danger')
-    else:
-        flash('예약을 찾을 수 없습니다.', 'danger')
-    return redirect(url_for('home'))
-
-if __name__ == '__main__':
-    app.run(debug
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 예약</title>
+    <!-- 부트스트랩 CSS를 사용하거나 원하는 스타일 시트를 링크할 수 있습니다. -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>차량 예약</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>차량 번호</th>
+                    <th>모델</th>
+                    <th>가용 여부</th>
+                    <th>예약</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                <tr>
+                    <td>{{ car.id }}</td>
+                    <td>{{ car.name }}</td>
+                    <td>{{ "가용" if car.available else "예약 중" }}</td>
+                    <td>
+                        {% if car.available %}
+                        <a href="{{ url_for('reserve', car_id=car.id, time_slot='2023-09-19T09:00:00') }}" class="btn btn-primary">예약하기</a>
+                        {% else %}
+                        <a href="{{ url_for('cancel_reservation', reservation_id=car.get('reservation_id', 0)) }}" class="btn btn-danger">예약 취소</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
