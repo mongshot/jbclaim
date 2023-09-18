@@ -24,6 +24,19 @@ def home():
 @app.route('/admin')
 def admin():
     return render_template('admin.html', cars=cars)
+@app.route('/admin/update/<int:car_id>', methods=['POST'])
+def update_car(car_id):
+    new_car_id = int(request.form['new_car_id'])
+    new_car_name = request.form['new_car_name']
+
+    # 해당 차량을 찾아서 수정
+    for car in cars:
+        if car['id'] == car_id:
+            car['id'] = new_car_id
+            car['name'] = new_car_name
+
+    flash('차량 정보가 수정되었습니다.', 'success')
+    return redirect(url_for('admin'))
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
     reservation = next((r for r in reservations if r.get('id') == reservation_id), None)
