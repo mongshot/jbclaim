@@ -34,6 +34,7 @@
                             <button type="submit" class="btn btn-primary">예약하기</button>
                         </form>
                         {% else %}
+                        <p>예약자명: {{ car.reservation_name }}</p> <!-- 예약자명 표시 -->
                         <a href="{{ url_for('cancel_reservation', reservation_id=car.get('reservation_id', 0)) }}" class="btn btn-danger">예약 취소</a>
                         {% endif %}
                     </td>
