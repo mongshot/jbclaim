@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, url_for
 from telegram import Bot
 import asyncio
 import os  # 환경 변수 사용을 위해 os 모듈을 가져옵니다.
@@ -36,13 +36,13 @@ def submit():
 
     try:
         loop.run_until_complete(send_telegram_message(message))
-        showSuccessMessage()  # 성공 메시지 표시
-        return '신고가 접수되었습니다. 감사합니다!'
+        flash('신고가 접수되었습니다. 감사합니다!', 'success')
     except Exception as e:
-        errorMessage = f'오류 발생: {str(e)}'
-        showErrorMessage(errorMessage)  # 오류 메시지 표시
-        return errorMessage, 500
+        # 오류 메시지를 flash 메시지로 저장
+        flash(f'오류 발생: {str(e)}', 'error')
+        return redirect(url_for('home'))
 
+    return redirect(url_for('home'))
 
 async def send_telegram_message(message):
     await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
