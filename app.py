@@ -9,8 +9,16 @@ app.debug = True
 Bootstrap(app)
 
 # 환경 변수에서 토큰과 채팅 ID를 가져옵니다.
-TELEGRAM_BOT_TOKEN = '6560335312:AAHo82hdFJr1q_6CKUkms7NkL68kwgMul08'
-TELEGRAM_CHAT_ID = '71046013'
+
+TELEGRAM_BOT_TOKEN = os.environ.get('6560335312:AAHo82hdFJr1q_6CKUkms7NkL68kwgMul08')  # 환경 변수에서 봇 토큰 가져오기
+TELEGRAM_CHAT_ID = os.environ.get('71046013')  # 환경 변수에서 채팅 ID 가져오기
+
+# 환경 변수가 설정되어 있지 않으면 기본 값을 사용합니다.
+if not TELEGRAM_BOT_TOKEN:
+    TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # 본인의 봇 토큰으로 대체
+
+if not TELEGRAM_CHAT_ID:
+    TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'  # 본인의 채팅 ID로 대체
 
 bot = Bot(token=TELEGRAM_BOT_TOKEN)  # 봇 객체 초기화
 
