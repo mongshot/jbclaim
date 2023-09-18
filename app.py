@@ -4,6 +4,7 @@ import re
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # 간단한 차량 데이터베이스
 cars = [
