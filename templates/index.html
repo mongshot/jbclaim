@@ -27,7 +27,7 @@
                     <td>{{ "가용" if car.available else "예약 중" }}</td>
                     <td>
                         {% if car.available %}
-                        <a href="{{ url_for('reserve', car_id=car.id, time_slot='2023-09-19T09:00:00') }}" class="btn btn-primary">예약하기</a>
+                        <a href="{{ url_for('reserve', car_id=car.id, year=2023, month=9, day=19, hour=9, minute=0) }}" class="btn btn-primary">예약하기</a>
                         {% else %}
                         <a href="{{ url_for('cancel_reservation', reservation_id=car.get('reservation_id', 0)) }}" class="btn btn-danger">예약 취소</a>
                         {% endif %}
