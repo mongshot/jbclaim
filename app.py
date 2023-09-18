@@ -36,12 +36,13 @@ def submit():
 
     try:
         loop.run_until_complete(send_telegram_message(message))
+        showSuccessMessage()  # 성공 메시지 표시
+        return '신고가 접수되었습니다. 감사합니다!'
     except Exception as e:
-        # 예외 처리를 통해 오류 메시지를 기록하고 사용자에게 오류를 알릴 수 있습니다.
-        error_message = f'오류 발생: {str(e)}'
-        return error_message
+        errorMessage = f'오류 발생: {str(e)}'
+        showErrorMessage(errorMessage)  # 오류 메시지 표시
+        return errorMessage, 500
 
-    return '신고가 접수되었습니다. 감사합니다!'
 
 async def send_telegram_message(message):
     await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
