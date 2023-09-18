@@ -5,6 +5,7 @@ import os  # 환경 변수 사용을 위해 os 모듈을 가져옵니다.
 
 app = Flask(__name__)
 app.debug = True
+app.secret_key = 'snoopy'  # 시크릿 키를 설정합니다.
 
 # 환경 변수에서 토큰과 채팅 ID를 가져옵니다.
 TELEGRAM_BOT_TOKEN = '6560335312:AAHo82hdFJr1q_6CKUkms7NkL68kwgMul08'
