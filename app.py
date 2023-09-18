@@ -49,13 +49,15 @@ def reserve(car_id, time_slot):
             if reservation_name:
                 car['available'] = False
                 car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
-                reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now(), 'reservation_name': reservation_name})
+                car['reservation_name'] = reservation_name  # 예약자명 저장
+                reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now()})
                 flash(f'{reservation_name} 님의 예약이 완료되었습니다.', 'success')
             else:
                 flash('예약자명을 입력하세요.', 'danger')
         else:
             flash('이미 예약된 차량입니다.', 'danger')
     return redirect(url_for('home'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
