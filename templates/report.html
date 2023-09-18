@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JB CORP 불편사항 신고</title>
+    <style>
+        /* Reset some default styles for better consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styling for the header */
+        .header {
+            text-align: center;
+            background-color: #0070c0;
+            color: white;
+            padding: 20px;
+            font-family: 'Nanum Square', sans-serif; /* 네이버 나눔스퀘어 폰트 설정 */
+        }
+
+        /* Styling for the container */
+        .container {
+            max-width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            border-radius: 10px;
+            font-family: 'Nanum Square', sans-serif; /* 네이버 나눔스퀘어 폰트 설정 */
+        }
+
+        /* Styling for the form */
+        form {
+            margin-top: 20px;
+        }
+
+        /* Styling for labels */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Styling for input fields and textarea */
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 20px;
+        }
+
+        /* Styling for the submit button */
+        input[type="submit"] {
+            background-color: #0070c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Add some spacing for readability */
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        /* Styling for the additional h5 elements */
+        h5 {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>JB CORP 불편사항 신고</h1>
+    </div>
+    <div class="container">
+        <!-- 내용 추가 -->
+        <h2>불편사항을 신고해주세요</h2>
+        <form id="complaintForm" method="POST" action="/submit" onsubmit="return validateForm();">
+            <!-- 입력 폼 추가 -->
+            <label for="reporterName">신고인:</label>
+            <input type="text" id="reporterName" name="reporterName" required><br><br>
+
+            <label for="reportLocation">신고위치:</label>
+            <input type="text" id="reportLocation" name="reportLocation" required><br><br>
+
+            <label for="complaint">신고사항:</label><br>
+            <textarea id="complaint" name="complaint" rows="4" cols="50" required></textarea><br><br>
+
+            <input type="submit" value="제출" id="submitButton">
+        </form>
+        <h5>정확한 신고사항을 확인하기 위해서 연락을 드릴 수 있습니다.</h5>
+        <h5>주의! 안전과 관련된 신고는 변화지원팀으로 전화주세요.</h5>
+    </div>
+    <script>
+        function validateForm() {
+            var reporterName = document.getElementById("reporterName").value;
+            var reportLocation = document.getElementById("reportLocation").value;
+            var complaint = document.getElementById("complaint").value;
+
+            if (reporterName === "" || reportLocation === "" || complaint === "") {
+                alert("모든 필수 입력란을 작성해주세요.");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>
