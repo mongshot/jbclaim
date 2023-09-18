@@ -26,24 +26,23 @@ def home():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    reporter = request.form['reporterName']
-    location = request.form['reportLocation']
-    complaint = request.form['complaint']
-
-    message = f'신고인: {reporter}\n신고위치: {location}\n신고사항: {complaint}'
-
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
     try:
+        reporter = request.form['reporterName']
+        location = request.form['reportLocation']
+        complaint = request.form['complaint']
+
+        message = f'신고인: {reporter}\n신고위치: {location}\n신고사항: {complaint}'
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
         loop.run_until_complete(send_telegram_message(message))
+        
         flash('신고가 접수되었습니다. 감사합니다!', 'success')
+        return redirect(url_for('home'))
     except Exception as e:
-        # 오류 메시지를 flash 메시지로 저장
         flash(f'오류 발생: {str(e)}', 'error')
         return redirect(url_for('home'))
-
-    return redirect(url_for('home'))
 
 async def send_telegram_message(message):
     await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
