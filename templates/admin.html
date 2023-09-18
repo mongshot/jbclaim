@@ -10,27 +10,28 @@
 <body>
     <div class="container">
         <h1>차량 관리</h1>
+        
+        <!-- 예약 내역 테이블 -->
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>예약 번호</th>
                     <th>차량 번호</th>
-                    <th>모델</th>
-                    <th>수정</th>
+                    <th>예약 일자</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 차량 정보 수정 폼 -->
-                {% for car in cars %}
-  <tr>
-    <form method="POST" action="{{ url_for('update_car', car_id=str(car.id)) }}">
-        <td><input type="number" name="new_car_id" value="{{ car.id }}" min="1000" max="9999"></td>
-        <td><input type="text" name="new_car_name" value="{{ car.name }}"></td>
-        <td><button type="submit" class="btn btn-primary">수정</button></td>
-    </form>
-</tr>
+                <!-- 예약 정보를 반복적으로 출력 -->
+                {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.reservation_number }}</td>
+                    <td>{{ reservation.car_id }}</td>
+                    <td>{{ reservation.reservation_date }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
+        
         <a href="{{ url_for('home') }}" class="btn btn-secondary">홈으로</a>
     </div>
 </body>
