@@ -25,23 +25,19 @@ def home():
 @app.route('/admin')
 def admin():
     return render_template('admin.html', cars=cars)
-@app.route('/admin/update/<int:car_id>', methods=['POST'])
+@app.route('/admin/update/<car_id>', methods=['POST'])
 def update_car(car_id):
     new_car_id = request.form['new_car_id']
-    new_car_name = request.form['new_car_name']
 
-    # 입력된 차량 번호가 형식에 맞는지 확인
-    if not re.match(r'^\d{3}[가-힣]\d{4}$', new_car_id):
-        flash('올바른 차량 번호 형식을 입력하세요 (예: 123가1234).', 'danger')
-    else:
-        # 해당 차량을 찾아서 수정
-        for car in cars:
-            if car['id'] == car_id:
-                car['id'] = new_car_id
-                car['name'] = new_car_name
+    # 차량 정보 업데이트
+    for car in cars:
+        if car['id'] == int(car_id):
+            car['name'] = request.form['new_model']
+            car['id'] = new_car_id  # 차량 번호를 문자열로 업데이트
 
-        flash('차량 정보가 수정되었습니다.', 'success')
+    flash(f'차량 정보가 업데이트되었습니다. (ID: {new_car_id})', 'success')
     return redirect(url_for('admin'))
+
 
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
