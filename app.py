@@ -46,13 +46,12 @@ def reserve(car_id, year, month, day, hour, minute):
     if car:
         if car['available']:
             car['available'] = False
-            # 연도, 월, 일, 시간, 분을 이용하여 datetime 객체 생성
-            reservation_time = datetime(year, month, day, hour, minute)
-            reservations.append({'car_id': car_id, 'time_slot': reservation_time, 'timestamp': datetime.now()})
+            reservations.append({'car_id': car_id, 'year': year, 'month': month, 'day': day, 'hour': hour, 'minute': minute, 'timestamp': datetime.now()})
             flash('예약이 완료되었습니다.', 'success')
         else:
             flash('이미 예약된 차량입니다.', 'danger')
     return redirect(url_for('home'))
+
 
 
 if __name__ == '__main__':
