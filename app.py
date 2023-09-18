@@ -7,13 +7,13 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # 간단한 차량 데이터베이스
 cars = [
-    {'id': 1, 'name': 'Car 1', 'available': True, 'reservation_id': None},
-    {'id': 2, 'name': 'Car 2', 'available': True, 'reservation_id': None},
-    {'id': 3, 'name': 'Car 3', 'available': True, 'reservation_id': None},
-    {'id': 4, 'name': 'Car 4', 'available': True, 'reservation_id': None},
-    {'id': 5, 'name': 'Car 5', 'available': True, 'reservation_id': None},
-    {'id': 6, 'name': 'Car 6', 'available': True, 'reservation_id': None},
-    {'id': 7, 'name': 'Car 7', 'available': True, 'reservation_id': None}
+    {'id': 1001, 'name': 'Car 1', 'available': True, 'reservation_id': None},
+    {'id': 1002, 'name': 'Car 2', 'available': True, 'reservation_id': None},
+    {'id': 1003, 'name': 'Car 3', 'available': True, 'reservation_id': None},
+    {'id': 1004, 'name': 'Car 4', 'available': True, 'reservation_id': None},
+    {'id': 1005, 'name': 'Car 5', 'available': True, 'reservation_id': None},
+    {'id': 1006, 'name': 'Car 6', 'available': True, 'reservation_id': None},
+    {'id': 1007, 'name': 'Car 7', 'available': True, 'reservation_id': None}
 ]
 
 # 간단한 예약 데이터베이스
@@ -27,15 +27,15 @@ def home():
 def admin():
     return render_template('admin.html', cars=cars)
 
-@app.route('/admin/update/<car_id>', methods=['POST'])
+@app.route('/admin/update/<int:car_id>', methods=['POST'])
 def update_car(car_id):
-    new_car_id = str(request.form['new_car_id'])
+    new_car_id = request.form['new_car_id']
 
     # 차량 정보 업데이트
     for car in cars:
-        if car['id'] == int(car_id):
+        if car['id'] == car_id:
             car['name'] = request.form['new_car_name']
-            car['id'] = new_car_id  # 차량 번호를 문자열로 업데이트
+            car['id'] = new_car_id  # 차량 번호를 숫자로 업데이트
 
     flash(f'차량 정보가 업데이트되었습니다. (ID: {new_car_id})', 'success')
     return redirect(url_for('admin'))
