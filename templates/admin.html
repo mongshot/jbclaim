@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <title>차량 관리</title>
+    <!-- 부트스트랩 CSS를 사용하거나 원하는 스타일 시트를 링크할 수 있습니다. -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Admin Page</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Model</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for car in cars %}
+    <div class="container">
+        <h1>차량 관리</h1>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>{{ car.id }}</td>
-                    <td>{{ car.name }}</td>
-                    <td>
-                        <form method="POST" action="{{ url_for('update_car', car_id=car.id) }}">
-                            <input type="text" name="new_model" placeholder="New Model">
-                            <button type="submit">Update</button>
-                        </form>
-                    </td>
+                    <th>차량 번호</th>
+                    <th>모델</th>
+                    <th>수정</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <!-- 차량 정보 수정 폼 -->
+                {% for car in cars %}
+                <tr>
+                    <form method="POST" action="{{ url_for('update_car', car_id=str(car.id)) }}">
+                        <td><input type="text" name="new_car_id" value="{{ car.id }}"></td>
+                        <td><input type="text" name="new_car_name" value="{{ car.name }}"></td>
+                        <td><button type="submit" class="btn btn-primary">수정</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">홈으로</a>
+    </div>
 </body>
 </html>
