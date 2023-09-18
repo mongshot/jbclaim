@@ -50,7 +50,7 @@ def reserve(car_id, time_slot):
                 car['available'] = False
                 car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
                 reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now(), 'reservation_name': reservation_name})
-                flash('예약이 완료되었습니다.', 'success')
+                flash(f'{reservation_name} 님의 예약이 완료되었습니다.', 'success')
             else:
                 flash('예약자명을 입력하세요.', 'danger')
         else:
