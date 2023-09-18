@@ -24,7 +24,7 @@ def home():
 
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
-    reservation = next((r for r in reservations if r['id'] == reservation_id), None)
+    reservation = next((r for r in reservations if r.get('id') == reservation_id), None)
     if reservation:
         car_id = reservation['car_id']
         car = next((c for c in cars if c['id'] == car_id), None)
@@ -42,6 +42,7 @@ def cancel_reservation(reservation_id):
     else:
         flash('예약을 찾을 수 없습니다.', 'danger')
     return redirect(url_for('home'))
+
 
 
 @app.route('/reserve/<int:car_id>/<time_slot>')
