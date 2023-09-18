@@ -40,19 +40,18 @@ def cancel_reservation(reservation_id):
         flash('예약을 찾을 수 없습니다.', 'danger')
     return redirect(url_for('home'))
 
-@app.route('/reserve/<int:car_id>/<int:year>/<int:month>/<int:day>/<int:hour>/<int:minute>')
-def reserve(car_id, year, month, day, hour, minute):
+@app.route('/reserve/<int:car_id>/<time_slot>')
+def reserve(car_id, time_slot):
     car = next((c for c in cars if c['id'] == car_id), None)
     if car:
         if car['available']:
             car['available'] = False
-            reservations.append({'car_id': car_id, 'year': year, 'month': month, 'day': day, 'hour': hour, 'minute': minute, 'timestamp': datetime.now()})
+            car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
+            reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now()})
             flash('예약이 완료되었습니다.', 'success')
         else:
             flash('이미 예약된 차량입니다.', 'danger')
     return redirect(url_for('home'))
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
