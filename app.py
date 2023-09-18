@@ -7,13 +7,13 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # 간단한 차량 데이터베이스
 cars = [
-    {'id': 1, 'name': 'Car 1', 'available': True, 'reservation_id': None},
-    {'id': 2, 'name': 'Car 2', 'available': True, 'reservation_id': None},
-    {'id': 3, 'name': 'Car 3', 'available': True, 'reservation_id': None},
-    {'id': 4, 'name': 'Car 4', 'available': True, 'reservation_id': None},
-    {'id': 5, 'name': 'Car 5', 'available': True, 'reservation_id': None},
-    {'id': 6, 'name': 'Car 6', 'available': True, 'reservation_id': None},
-    {'id': 7, 'name': 'Car 7', 'available': True, 'reservation_id': None}
+    {'id': 4836, 'name': '넥소', 'available': True, 'reservation_id': None},
+    {'id': 7385, 'name': '카니발', 'available': True, 'reservation_id': None},
+    {'id': 8636, 'name': '카니발', 'available': True, 'reservation_id': None},
+    {'id': 2055, 'name': '아반떼', 'available': True, 'reservation_id': None},
+    {'id': 6739, 'name': '아반떼', 'available': True, 'reservation_id': None},
+    {'id': 3694, 'name': '아반떼', 'available': True, 'reservation_id': None},
+    {'id': 6599, 'name': '투싼', 'available': True, 'reservation_id': None}
 ]
 
 # 간단한 예약 데이터베이스
