@@ -40,15 +40,19 @@ def cancel_reservation(reservation_id):
         flash('예약을 찾을 수 없습니다.', 'danger')
     return redirect(url_for('home'))
 
-@app.route('/reserve/<int:car_id>/<time_slot>')
+@app.route('/reserve/<int:car_id>/<time_slot>', methods=['POST'])
 def reserve(car_id, time_slot):
     car = next((c for c in cars if c['id'] == car_id), None)
     if car:
         if car['available']:
-            car['available'] = False
-            car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
-            reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now()})
-            flash('예약이 완료되었습니다.', 'success')
+            reservation_name = request.form.get('reservation_name')  # 입력 필드에서 예약자명 추출
+            if reservation_name:
+                car['available'] = False
+                car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
+                reservations.append({'id': len(reservations) + 1, 'car_id': car_id, 'time_slot': time_slot, 'timestamp': datetime.now(), 'reservation_name': reservation_name})
+                flash('예약이 완료되었습니다.', 'success')
+            else:
+                flash('예약자명을 입력하세요.', 'danger')
         else:
             flash('이미 예약된 차량입니다.', 'danger')
     return redirect(url_for('home'))
