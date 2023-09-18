@@ -1,29 +1,23 @@
 from flask import Flask, render_template, request
-from flask_bootstrap import Bootstrap
 from telegram import Bot
 import asyncio
-import os
+import os  # 환경 변수 사용을 위해 os 모듈을 가져옵니다.
 
 app = Flask(__name__)
 app.debug = True
-Bootstrap(app)
 
 # 환경 변수에서 토큰과 채팅 ID를 가져옵니다.
-
-TELEGRAM_BOT_TOKEN = os.environ.get('6560335312:AAHo82hdFJr1q_6CKUkms7NkL68kwgMul08')  # 환경 변수에서 봇 토큰 가져오기
-TELEGRAM_CHAT_ID = os.environ.get('71046013')  # 환경 변수에서 채팅 ID 가져오기
+TELEGRAM_BOT_TOKEN = '6560335312:AAHo82hdFJr1q_6CKUkms7NkL68kwgMul08'
+TELEGRAM_CHAT_ID = '71046013'
 
 # 환경 변수가 설정되어 있지 않으면 기본 값을 사용합니다.
 if not TELEGRAM_BOT_TOKEN:
-    TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # 본인의 봇 토큰으로 대체
+    TELEGRAM_BOT_TOKEN = 'YOUR_DEFAULT_BOT_TOKEN'
 
 if not TELEGRAM_CHAT_ID:
-    TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'  # 본인의 채팅 ID로 대체
+    TELEGRAM_CHAT_ID = 'YOUR_DEFAULT_CHAT_ID'
 
-bot = Bot(token=TELEGRAM_BOT_TOKEN)  # 봇 객체 초기화
-
-async def send_telegram_message(message):
-    await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+bot = Bot(token=TELEGRAM_BOT_TOKEN)
 
 @app.route('/')
 def home():
@@ -43,10 +37,14 @@ def submit():
     try:
         loop.run_until_complete(send_telegram_message(message))
     except Exception as e:
+        # 예외 처리를 통해 오류 메시지를 기록하고 사용자에게 오류를 알릴 수 있습니다.
         error_message = f'오류 발생: {str(e)}'
-        return render_template('error.html', error_message=error_message)
+        return error_message
 
-    return render_template('success.html')
+    return '신고가 접수되었습니다. 감사합니다!'
+
+async def send_telegram_message(message):
+    await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
 
 if __name__ == '__main__':
     try:
