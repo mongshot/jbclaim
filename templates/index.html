@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 예약</title>
+    <!-- 부트스트랩 CSS를 사용하거나 원하는 스타일 시트를 링크할 수 있습니다. -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>차량 예약</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>차량 번호</th>
+                    <th>모델</th>
+                    <th>가용 여부</th>
+                    <th>예약</th>
+                </tr>
+            </thead>
+            <tbody>
 <!-- 예약된 차량 정보 표시 -->
 {% for car in cars %}
 <tr>
@@ -19,3 +41,9 @@
     </td>
 </tr>
 {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
