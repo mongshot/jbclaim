@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from datetime import datetime
-import re
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
@@ -23,22 +22,23 @@ reservations = []
 @app.route('/')
 def home():
     return render_template('index.html', cars=cars, reservations=reservations)
+
 @app.route('/admin')
 def admin():
     return render_template('admin.html', cars=cars)
+
 @app.route('/admin/update/<car_id>', methods=['POST'])
 def update_car(car_id):
-    new_car_id = request.form['new_car_id']
+    new_car_id = str(request.form['new_car_id'])
 
     # 차량 정보 업데이트
     for car in cars:
         if car['id'] == int(car_id):
-            car['name'] = request.form['new_model']
+            car['name'] = request.form['new_car_name']
             car['id'] = new_car_id  # 차량 번호를 문자열로 업데이트
 
     flash(f'차량 정보가 업데이트되었습니다. (ID: {new_car_id})', 'success')
     return redirect(url_for('admin'))
-
 
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
@@ -63,7 +63,7 @@ def reserve(car_id, time_slot):
     car = next((c for c in cars if c['id'] == car_id), None)
     if car:
         if car['available']:
-            reservation_name = request.form.get('reservation_name')  # 입력 필드에서 예약자명 추출
+            reservation_name = request.form.get('reservation_name', '')  # 예약자명 추출
             if reservation_name:
                 car['available'] = False
                 car['reservation_id'] = len(reservations) + 1  # 예약 ID 생성
@@ -75,7 +75,6 @@ def reserve(car_id, time_slot):
         else:
             flash('이미 예약된 차량입니다.', 'danger')
     return redirect(url_for('home'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)
