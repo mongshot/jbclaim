@@ -21,13 +21,13 @@
             <tbody>
                 <!-- 차량 정보 수정 폼 -->
                 {% for car in cars %}
-                <tr>
-                    <form method="POST" action="{{ url_for('update_car', car_id=str(car.id)) }}">
-                        <td><input type="text" name="new_car_id" value="{{ car.id }}"></td>
-                        <td><input type="text" name="new_car_name" value="{{ car.name }}"></td>
-                        <td><button type="submit" class="btn btn-primary">수정</button></td>
-                    </form>
-                </tr>
+  <tr>
+    <form method="POST" action="{{ url_for('update_car', car_id=str(car.id)) }}">
+        <td><input type="number" name="new_car_id" value="{{ car.id }}" min="1000" max="9999"></td>
+        <td><input type="text" name="new_car_name" value="{{ car.name }}"></td>
+        <td><button type="submit" class="btn btn-primary">수정</button></td>
+    </form>
+</tr>
                 {% endfor %}
             </tbody>
         </table>
