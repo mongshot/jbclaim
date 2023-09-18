@@ -8,6 +8,9 @@ app = Flask(__name__)
 app.debug = True
 Bootstrap(app)  # Bootstrap 초기화
 
+async def send_telegram_message(message):
+    await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+
 # 나머지 코드는 그대로 유지됩니다.
 
 @app.route('/')
