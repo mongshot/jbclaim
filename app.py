@@ -21,7 +21,9 @@ reservations = []
 @app.route('/')
 def home():
     return render_template('index.html', cars=cars, reservations=reservations)
-
+@app.route('/admin')
+def admin():
+    return render_template('admin.html', cars=cars)
 @app.route('/cancel/<int:reservation_id>')
 def cancel_reservation(reservation_id):
     reservation = next((r for r in reservations if r.get('id') == reservation_id), None)
