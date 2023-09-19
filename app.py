@@ -24,7 +24,7 @@ class Reservation(db.Model):
 
 @app.route('/')
 def home():
-    cars = Car.query.all()
+    cars = Car.query.filter_by(available=True).all()
     return render_template('index.html', cars=cars)
 
 @app.route('/admin')
@@ -34,26 +34,21 @@ def admin():
 
 @app.route('/admin/update/<int:car_id>', methods=['POST'])
 def update_car(car_id):
-    new_car_id = str(request.form['new_car_id'])
-
-    # 차량 정보 업데이트
     car = Car.query.get_or_404(car_id)
+
+    # 차량 번호를 숫자로 업데이트
+    car.id = int(request.form['new_car_id'])
     car.name = request.form['new_car_name']
-    car.id = new_car_id  # 차량 번호를 문자열로 업데이트
     db.session.commit()
 
-    flash(f'차량 정보가 업데이트되었습니다. (ID: {new_car_id})', 'success')
+    flash(f'차량 정보가 업데이트되었습니다. (ID: {car.id})', 'success')
     return redirect(url_for('admin'))
 
 @app.route('/cancel_reservation/<int:reservation_id>')
 def cancel_reservation(reservation_id):
     reservation = Reservation.query.get_or_404(reservation_id)
-    car = Car.query.get_or_404(reservation.car_id)
-
-    # 차량 상태 변경 및 예약 정보 제거
+    car = reservation.car
     car.available = True
-    car.reservation_id = None
-    car.reservation_name = None
     db.session.delete(reservation)
     db.session.commit()
 
@@ -65,11 +60,11 @@ def reserve(car_id, time_slot):
     car = Car.query.get_or_404(car_id)
 
     if car.available:
-        reservation_name = request.form.get('reservation_name', '')  # 예약자명 추출
+        reservation_name = request.form.get('reservation_name', '')
 
         if reservation_name:
             car.available = False
-            car.reservation_id = len(Reservation.query.all()) + 1  # 예약 ID 생성
+            car.reservation_id = len(Reservation.query.all()) + 1
             car.reservation_name = reservation_name
 
             reservation = Reservation(car_id=car.id, time_slot=time_slot)
@@ -79,11 +74,8 @@ def reserve(car_id, time_slot):
             flash(f'{reservation_name} 님의 예약이 완료되었습니다.', 'success')
         else:
             flash('예약자명을 입력하세요.', 'danger')
+            return redirect(url_for('reserve', car_id=car_id, time_slot=time_slot))
     else:
         flash('이미 예약된 차량입니다.', 'danger')
 
-    return redirect(url_for('home'))
-
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
+    return
