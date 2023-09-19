@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate  # Flask-Migrate import 추가
+from flask_migrate import Migrate
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'  # SQLite 데이터베이스 설정
+app.secret_key = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)  # Migrate 객체 생성
+migrate = Migrate(app, db)
 
 # 데이터베이스 모델 정의
 class Car(db.Model):
@@ -86,6 +86,21 @@ def reserve(car_id, time_slot):
         flash('이미 예약된 차량입니다.', 'danger')
 
     return redirect(url_for('home'))
+
+# 차량 등록
+@app.route('/register_car', methods=['GET', 'POST'])
+def register_car():
+    if request.method == 'POST':
+        car_name = request.form['car_name']
+        if car_name:
+            car = Car(name=car_name, available=True)
+            db.session.add(car)
+            db.session.commit()
+            flash(f'{car_name} 차량이 등록되었습니다.', 'success')
+            return redirect(url_for('admin'))
+        else:
+            flash('차량 이름을 입력하세요.', 'danger')
+    return render_template('register_car.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
