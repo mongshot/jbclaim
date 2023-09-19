@@ -119,5 +119,17 @@ def edit_car(car_id):
 
     return render_template('edit_car.html', car=car)
 
+# 차량 삭제
+@app.route('/delete_car/<int:car_id>', methods=['POST'])
+def delete_car(car_id):
+    car = Car.query.get_or_404(car_id)
+    car_name = car.name  # 삭제할 차량의 모델 이름을 저장
+    
+    db.session.delete(car)
+    db.session.commit()
+    
+    flash(f'차량이 삭제되었습니다. (ID: {car.id}, 모델: {car_name})', 'success')
+    return redirect(url_for('admin'))
+
 if __name__ == '__main__':
     app.run(debug=True)
