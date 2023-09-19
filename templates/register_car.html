@@ -1,38 +1,31 @@
-<!-- register_car.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>차량 등록</title>
 </head>
 <body>
     <h1>차량 등록</h1>
-    
-    <!-- 등록 폼 -->
-    <form method="POST">
-        <label for="car_name">모델:</label>
-        <input type="text" id="car_name" name="car_name" required>
+    <form method="POST" action="/register_car">
+        <label for="car_id">차량 번호:</label>
+        <input type="text" id="car_id" name="car_id" required>
         <br>
-        <label for="car_available">상태:</label>
-        <select id="car_available" name="car_available">
-            <option value="사용 가능">사용 가능</option>
-            <option value="사용 중">사용 중</option>
-        </select>
+        <label for="car_model">차량 모델:</label>
+        <input type="text" id="car_model" name="car_model" required>
         <br>
         <input type="submit" value="등록">
     </form>
 
-    <!-- 등록된 차량 목록 -->
-    <h2>등록된 차량 목록</h2>
+    <h2>차량 목록</h2>
     <ul>
         {% for car in cars %}
             <li>
-                모델: {{ car.name }}, 
-                상태: {{ car.available }}
-                <a href="{{ url_for('edit_car', car_id=car.id) }}">수정</a>
+                차량 번호: {{ car.id }}<br>
+                모델: {{ car.name }}<br>
+                <a href="/edit_car/{{ car.id }}">수정</a>
             </li>
         {% endfor %}
     </ul>
-
-    <a href="{{ url_for('admin') }}">뒤로 가기</a>
 </body>
 </html>
