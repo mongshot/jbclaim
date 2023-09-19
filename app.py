@@ -40,3 +40,4 @@ if __name__ == "__main__":
             print("차량이 추가되었습니다.")
         elif choice == "2":
             break
+
