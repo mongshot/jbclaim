@@ -21,12 +21,9 @@
         {% endfor %}
     </ul>
 
-    <!-- 차량 등록 폼 -->
-    <h2>차량 등록</h2>
-    <form action="{{ url_for('register_car') }}" method="POST">
-        <label for="car_model">모델:</label>
-        <input type="text" id="car_model" name="car_model" required>
-        <button type="submit">등록</button>
-    </form>
+    <!-- 차량 등록 및 수정 버튼 -->
+    <h2>차량 관리</h2>
+    <a href="{{ url_for('register_car') }}">차량 등록</a>
+    <a href="{{ url_for('edit_car') }}">차량 수정</a>
 </body>
 </html>
