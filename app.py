@@ -105,6 +105,19 @@ def register_car():
     
     return render_template('register_car.html')
 
+@app.route('/edit_car/<int:car_id>', methods=['GET', 'POST'])
+def edit_car(car_id):
+    car = Car.query.get_or_404(car_id)
+
+    if request.method == 'POST':
+        car.name = request.form['car_name']
+        car.available = request.form['car_available'] == '사용 가능'
+
+        db.session.commit()
+        flash(f'차량 정보가 수정되었습니다. (모델: {car.name})', 'success')
+        return redirect(url_for('register_car'))
+
+    return render_template('edit_car.html', car=car)
 
 if __name__ == '__main__':
     app.run(debug=True)
