@@ -12,14 +12,25 @@
             <th>모델</th>
             <th>연식</th>
             <th>사용 가능 여부</th>
+            <th>예약</th>
         </tr>
-        {% for row in vehicle_data.iterrows() %}
+        {% for index, row in vehicle_data.iterrows() %}
         <tr>
             <td>{{ row['vehicle_id'] }}</td>
             <td>{{ row['make'] }}</td>
             <td>{{ row['model'] }}</td>
             <td>{{ row['year'] }}</td>
             <td>{{ row['available'] }}</td>
+            <td>
+                {% if row['available'] == 'Yes' %}
+                <form method="POST" action="/reserve">
+                    <input type="hidden" name="vehicle_id" value="{{ row['vehicle_id'] }}">
+                    <button type="submit">예약하기</button>
+                </form>
+                {% else %}
+                차량 예약 불가
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </table>
