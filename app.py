@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 보안을 위한 시크릿 키
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'  # SQLite 데이터베이스 설정
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.create_all()
 db = SQLAlchemy(app)
 
 class Car(db.Model):
