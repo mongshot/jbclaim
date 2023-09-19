@@ -1,16 +1,18 @@
-<!-- templates/register_car.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>차량 등록</title>
 </head>
 <body>
     <h1>차량 등록</h1>
-    <form method="POST" action="{{ url_for('register_car') }}">
-        <label for="car_name">차량 이름:</label>
-        <input type="text" name="car_name" required>
-        <button type="submit">등록</button>
+    <form method="POST">
+        <label for="car_name">차량 번호:</label>
+        <input type="text" id="car_name" name="car_name" required>
+        <br>
+        <label for="car_model">차량 모델:</label>
+        <input type="text" id="car_model" name="car_model" required>
+        <br>
+        <input type="submit" value="등록">
     </form>
 </body>
 </html>
