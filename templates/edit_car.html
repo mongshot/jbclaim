@@ -1,0 +1,23 @@
+<!-- edit_car.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>차량 수정</title>
+</head>
+<body>
+    <h1>차량 수정</h1>
+    <form method="POST">
+        <label for="car_name">모델:</label>
+        <input type="text" id="car_name" name="car_name" value="{{ car.name }}" required>
+        <br>
+        <label for="car_available">상태:</label>
+        <select id="car_available" name="car_available">
+            <option value="사용 가능" {% if car.available %}selected{% endif %}>사용 가능</option>
+            <option value="사용 중" {% if not car.available %}selected{% endif %}>사용 중</option>
+        </select>
+        <br>
+        <input type="submit" value="수정">
+    </form>
+    <a href="{{ url_for('register_car') }}">뒤로 가기</a>
+</body>
+</html>
