@@ -20,9 +20,15 @@
     {% endfor %}
 </ul>
 
-    <!-- 차량 등록 및 수정 버튼 -->
-    <h2>차량 관리</h2>
-    <a href="{{ url_for('register_car') }}">차량 등록</a>
-    <a href="{{ url_for('edit_car') }}">차량 수정</a>
+<!-- 차량 선택 및 수정 버튼 -->
+<h2>차량 선택 및 수정</h2>
+<form method="POST" action="{{ url_for('edit_car') }}">
+    <select name="car_id">
+        {% for car in cars %}
+            <option value="{{ car.id }}">{{ car.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="선택한 차량 수정">
+</form>
 </body>
 </html>
