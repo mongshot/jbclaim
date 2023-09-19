@@ -92,15 +92,18 @@ def reserve(car_id, time_slot):
 def register_car():
     if request.method == 'POST':
         car_name = request.form['car_name']
-        if car_name:
-            car = Car(name=car_name, available=True)
+        car_model = request.form['car_model']  # 모델 정보 입력 추가
+
+        if car_name and car_model:
+            car = Car(name=car_name, model=car_model, available=True)
             db.session.add(car)
             db.session.commit()
-            flash(f'{car_name} 차량이 등록되었습니다.', 'success')
+            flash(f'{car_name} 차량 (모델: {car_model}) 가 등록되었습니다.', 'success')
             return redirect(url_for('admin'))
         else:
-            flash('차량 이름을 입력하세요.', 'danger')
+            flash('차량 이름과 모델 정보를 모두 입력하세요.', 'danger')
     return render_template('register_car.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
