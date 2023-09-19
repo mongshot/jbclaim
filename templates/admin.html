@@ -2,37 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>차량 관리</title>
-    <!-- 부트스트랩 CSS를 사용하거나 원하는 스타일 시트를 링크할 수 있습니다. -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Admin Page</title>
 </head>
 <body>
-    <div class="container">
-        <h1>차량 관리</h1>
-        
-        <!-- 예약 내역 테이블 -->
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>예약 번호</th>
-                    <th>차량 번호</th>
-                    <th>예약 일자</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 예약 정보를 반복적으로 출력 -->
-                {% for reservation in reservations %}
-                <tr>
-                    <td>{{ reservation.reservation_number }}</td>
-                    <td>{{ reservation.car_id }}</td>
-                    <td>{{ reservation.reservation_date }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        <a href="{{ url_for('home') }}" class="btn btn-secondary">홈으로</a>
-    </div>
+    <h1>Admin Page</h1>
+    
+    <!-- 차량 목록 -->
+    <h2>차량 목록</h2>
+    <ul>
+        {% for car in cars %}
+            <li>
+                {{ car.name }}
+                <a href="{{ url_for('edit_car', car_id=car.id) }}">수정</a>
+                <a href="{{ url_for('delete_car', car_id=car.id) }}">삭제</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- 차량 등록 폼 -->
+    <h2>차량 등록</h2>
+    <form action="{{ url_for('register_car') }}" method="POST">
+        <label for="car_model">모델:</label>
+        <input type="text" id="car_model" name="car_model" required>
+        <button type="submit">등록</button>
+    </form>
 </body>
 </html>
