@@ -1,23 +1,36 @@
-<!-- edit_car.html -->
+<!-- admin.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>차량 수정</title>
+    <title>관리자 페이지</title>
 </head>
 <body>
-    <h1>차량 수정</h1>
-    <form method="POST">
-        <label for="car_name">모델:</label>
-        <input type="text" id="car_name" name="car_name" value="{{ car.name }}" required>
-        <br>
-        <label for="car_available">상태:</label>
-        <select id="car_available" name="car_available">
-            <option value="사용 가능" {% if car.available %}selected{% endif %}>사용 가능</option>
-            <option value="사용 중" {% if not car.available %}selected{% endif %}>사용 중</option>
-        </select>
-        <br>
-        <input type="submit" value="수정">
-    </form>
-    <a href="{{ url_for('register_car') }}">뒤로 가기</a>
+    <h1>관리자 페이지</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>모델</th>
+                <th>상태</th>
+                <th>예약 정보</th>
+                <th>작업</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <td>{{ car.id }}</td>
+                <td>{{ car.name }}</td>
+                <td>{{ "사용 가능" if car.available else "사용 중" }}</td>
+                <td>{{ car.reservation_info or "없음" }}</td>
+                <td>
+                    <a href="{{ url_for('edit_car', car_id=car.id) }}">차량 수정</a> |
+                    <a href="{{ url_for('delete_car', car_id=car.id) }}">삭제</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('register_car') }}">차량 등록</a>
 </body>
 </html>
