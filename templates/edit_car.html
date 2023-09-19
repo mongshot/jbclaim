@@ -17,19 +17,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for car in cars %}
-            <tr>
-                <td>{{ car.id }}</td>
-                <td>{{ car.name }}</td>
-                <td>{{ "사용 가능" if car.available else "사용 중" }}</td>
-                <td>{{ car.reservation_info or "없음" }}</td>
-                <td>
-                    <a href="{{ url_for('edit_car', car_id=car.id) }}">차량 수정</a> |
-                    <a href="{{ url_for('delete_car', car_id=car.id) }}">삭제</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    {% for car in cars %}
+    <tr>
+        <td>{{ car.id }}</td>
+        <td>{{ car.name }}</td>
+        <td>{{ "사용 가능" if car.available else "사용 중" }}</td>
+        <td>{{ car.reservation_info or "없음" }}</td>
+        <td>
+            <a href="{{ url_for('edit_car', car_id=car.id) }}">차량 수정</a> |
+            <a href="{{ url_for('delete_car', car_id=car.id) }}">삭제</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
     </table>
     <a href="{{ url_for('register_car') }}">차량 등록</a>
 </body>
